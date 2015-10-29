@@ -1,19 +1,28 @@
 EXTRA_DIST =
 CLEANFILES =
 
-# Executable
+# Executables
 
 dist_bin_SCRIPTS = bin/jasmine
+dist_pkglibexec_SCRIPTS = bin/jasmine-runner
 
 do_subst = sed \
 	-e 's,[@]datadir[@],$(datadir),g' \
+	-e 's,[@]pkglibexecdir[@],$(pkglibexecdir),g' \
+	-e 's,[@]PACKAGE_VERSION[@],@PACKAGE_VERSION@,g' \
 	$(NULL)
-bin/jasmine: bin/jasmine.in Makefile
+bin/%: bin/%.in Makefile
 	$(AM_V_GEN)$(MKDIR_P) bin && \
 	$(do_subst) < $< > $@ && \
 	chmod +x $@
-EXTRA_DIST += bin/jasmine.in
-CLEANFILES += bin/jasmine
+EXTRA_DIST += \
+	bin/jasmine.in \
+	bin/jasmine-runner.in \
+	$(NULL)
+CLEANFILES += \
+	bin/jasmine \
+	bin/jasmine-runner \
+	$(NULL)
 
 # Source code
 
